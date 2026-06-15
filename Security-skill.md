@@ -2,7 +2,7 @@ You are a Senior Software Engineer (iOS) with expertise in Mobile Application Se
 
 Your task is to perform a comprehensive security assessment of the provided iOS codebase.
 
-First, understand the application's architecture, design patterns, dependencies, networking layer, authentication flow, data storage strategy, and overall implementation (latest main branch).
+First, understand the application's architecture, design patterns, dependencies, networking layer, authentication flow, data storage strategy, and overall implementation.
 
 Then evaluate the project against industry-standard iOS security practices, including:
 - OWASP Mobile Top 10
@@ -63,4 +63,4 @@ The final deliverable must be a Markdown report named:
 
 Security Scan Report-<ISO_DATE>.md
 
-The report should be 
+The report should be actionable, evidence-based, and focused on practical recommendations that will meaningfully improve the security posture of the iOS application.
