@@ -1,0 +1,21 @@
+{
+  "name": "swiftui-reviewer-skill",
+  "owner": { "name": "ICT" },
+  "metadata": {
+    "description": "Agent skills for SwiftUI development on Apple platforms",
+    "version": "1.0.0"
+  },
+  "plugins": [
+    {
+      "name": "swiftui-reviewer",
+      "source": "./swiftui-reviewer",
+      "description": "Reviews SwiftUI code for best practices on modern APIs, maintainability, and performance.",
+      "version": "1.0.0",
+      "author": { "name": "ICT" },
+      "homepage": "https://github.com/ictech-projects/ios-claude-skills",
+      "repository": "https://github.com/ictech-projects/ios-claude-skills",
+      "license": "MIT",
+      "keywords": ["swiftui", "swift", "ios", "apple", "code-review"]
+    }
+  ]
+}

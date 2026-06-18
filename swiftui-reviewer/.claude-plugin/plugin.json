@@ -1,0 +1,10 @@
+{
+    "name": "swiftui-reviewer",
+    "version": "1.0.0",
+    "description": "Reviews SwiftUI code for best practices on modern APIs, maintainability, and performance.",
+    "author": { "name": "ICT" },
+    "homepage": "https://github.com/ictech-projects/ios-claude-skills",
+    "repository": "https://github.com/ictech-projects/ios-claude-skills",
+    "license": "MIT",
+    "skills": "./skills/"
+  }
