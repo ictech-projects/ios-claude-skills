@@ -1,6 +1,6 @@
 # Using modern SwiftUI API
 
-- Preferred use `foregroundStyle()` instead of `foregroundColor()` but still need to check the iOS minimum version on the project. Don't give a advise to change if caused minimum version error.
+- Don't check this if the minimum iOS Deployment target are below iOS 17. If the deployment target iOS 17 and higher, Always use `foregroundStyle()` instead of `foregroundColor()`.
 - Always use `clipShape(.rect(cornerRadius:))` instead of `cornerRadius()`.
 - Always use the `Tab` API instead of `tabItem()`.
 - Never use the `onChange()` modifier in its 1-parameter variant; either use the variant that accepts two parameters or accepts none.
