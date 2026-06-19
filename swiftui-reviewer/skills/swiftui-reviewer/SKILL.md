@@ -41,6 +41,7 @@ Organize findings by file. For each issue:
 1. State the file and relevant line(s).
 2. Name the rule being violated (e.g., "Use `foregroundStyle()` instead of `foregroundColor()`").
 3. Show a brief before/after code fix.
+4. Ignore "Use `foregroundStyle()` instead of `foregroundColor()`" issues if the deployment target is below iOS 17.
 
 Skip files with no issues. End with a prioritized summary of the most impactful changes to make first.
 
