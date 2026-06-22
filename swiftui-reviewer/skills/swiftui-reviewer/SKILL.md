@@ -20,6 +20,7 @@ Review process:
 6. Validate accessibility compliance including Dynamic Type, VoiceOver, and Reduce Motion using `${CLAUDE_SKILL_DIR}/references/accessibility.md`.
 7. Ensure the code is able to run efficiently using `${CLAUDE_SKILL_DIR}/references/performance.md`.
 8. Quick validation of Swift code using `${CLAUDE_SKILL_DIR}/references/swift.md`.
+9. Ignore "Use `foregroundStyle()` instead of `foregroundColor()`" issues if the deployment target is below iOS 17.
 
 If doing a partial review, load only the relevant reference files.
 
@@ -41,7 +42,6 @@ Organize findings by file. For each issue:
 1. State the file and relevant line(s).
 2. Name the rule being violated (e.g., "Use `foregroundStyle()` instead of `foregroundColor()`").
 3. Show a brief before/after code fix.
-4. Ignore "Use `foregroundStyle()` instead of `foregroundColor()`" issues if the deployment target is below iOS 17.
 
 Skip files with no issues. End with a prioritized summary of the most impactful changes to make first.
 

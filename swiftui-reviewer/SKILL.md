@@ -12,13 +12,14 @@ Review Swift and SwiftUI code for correctness, modern API usage, and adherence t
 Review process:
 
 1. Check for deprecated API using `references/api.md`.
-1. Check that views, modifiers, and animations have been written optimally using `references/views.md`.
-1. Validate that data flow is configured correctly using `references/data.md`.
-1. Ensure navigation is updated and performant using `references/navigation.md`.
-1. Ensure the code uses designs that are accessible and compliant with Apple’s Human Interface Guidelines using `references/design.md`.
-1. Validate accessibility compliance including Dynamic Type, VoiceOver, and Reduce Motion using `references/accessibility.md`.
-1. Ensure the code is able to run efficiently using `references/performance.md`.
-1. Quick validation of Swift code using `references/swift.md`.
+2. Check that views, modifiers, and animations have been written optimally using `references/views.md`.
+3. Validate that data flow is configured correctly using `references/data.md`.
+4. Ensure navigation is updated and performant using `references/navigation.md`.
+5. Ensure the code uses designs that are accessible and compliant with Apple’s Human Interface Guidelines using `references/design.md`.
+6. Validate accessibility compliance including Dynamic Type, VoiceOver, and Reduce Motion using `references/accessibility.md`.
+7. Ensure the code is able to run efficiently using `references/performance.md`.
+8. Quick validation of Swift code using `references/swift.md`.
+9. Ignore "Use `foregroundStyle()` instead of `foregroundColor()`" issues if the deployment target is below iOS 17.
 
 If doing a partial review, load only the relevant reference files.
 
@@ -40,7 +41,6 @@ Organize findings by file. For each issue:
 1. State the file and relevant line(s).
 2. Name the rule being violated (e.g., "Use `foregroundStyle()` instead of `foregroundColor()`").
 3. Show a brief before/after code fix.
-4. Ignore "Use `foregroundStyle()` instead of `foregroundColor()`" issues if the deployment target is below iOS 17.
 
 Skip files with no issues. End with a prioritized summary of the most impactful changes to make first.
 
