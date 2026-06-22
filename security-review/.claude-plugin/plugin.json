@@ -1,0 +1,10 @@
+{
+    "name": "security-review",
+    "version": "1.0.0",
+    "description": "Comprehensive iOS security assessment for the ICT iOS team. Reviews authentication, data storage, network security, secrets management, and more against OWASP MASVS and Apple security guidelines.",
+    "author": { "name": "ICT" },
+    "homepage": "https://github.com/ictech-projects/ios-claude-skills",
+    "repository": "https://github.com/ictech-projects/ios-claude-skills",
+    "license": "MIT",
+    "skills": "./skills/"
+  }
