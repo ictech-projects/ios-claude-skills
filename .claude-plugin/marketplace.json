@@ -18,6 +18,17 @@
       "keywords": ["swiftui", "swift", "ios", "apple", "code-review"]
     },
     {
+      "name": "swiftui-view-gen",
+      "source": "./swiftui-view-gen",
+      "description": "Generates SwiftUI views from Figma designs.",
+      "version": "1.0.0",
+      "author": { "name": "ICT" },
+      "homepage": "https://github.com/ictech-projects/ios-claude-skills",
+      "repository": "https://github.com/ictech-projects/ios-claude-skills",
+      "license": "MIT",
+      "keywords": ["swiftui", "swift", "ios", "apple", "code-generation"]
+    },
+    {
       "name": "security-review",
       "source": "./security-review",
       "description": "Comprehensive iOS security assessment against OWASP MASVS and Apple security guidelines. Reviews authentication, data storage, network security, secrets management, and more.",
