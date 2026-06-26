@@ -1,0 +1,10 @@
+{
+    "name": "data-layer",
+    "version": "1.0.0",
+    "description": "Creates or reviews the iOS Data layer for a given domain, following ICT's mandatory architecture (Model → TargetType → RemoteDataSource → Repository).",
+    "author": { "name": "ICT" },
+    "homepage": "https://github.com/ictech-projects/ios-claude-skills",
+    "repository": "https://github.com/ictech-projects/ios-claude-skills",
+    "license": "MIT",
+    "skills": "./skills/"
+  }
