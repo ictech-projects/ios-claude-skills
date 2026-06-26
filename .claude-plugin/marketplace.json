@@ -1,9 +1,9 @@
 {
-  "name": "swiftui-reviewer-skill",
+  "name": "ios-claude-skills",
   "owner": { "name": "ICT" },
   "metadata": {
-    "description": "Agent skills for SwiftUI development on Apple platforms",
-    "version": "1.0.0"
+    "description": "Agent skills for iOS development on Apple platforms",
+    "version": "1.2.0"
   },
   "plugins": [
     {
@@ -16,6 +16,28 @@
       "repository": "https://github.com/ictech-projects/ios-claude-skills",
       "license": "MIT",
       "keywords": ["swiftui", "swift", "ios", "apple", "code-review"]
+    },
+    {
+      "name": "security-review",
+      "source": "./security-review",
+      "description": "Comprehensive iOS security assessment against OWASP MASVS and Apple security guidelines. Reviews authentication, data storage, network security, secrets management, and more.",
+      "version": "1.0.0",
+      "author": { "name": "ICT" },
+      "homepage": "https://github.com/ictech-projects/ios-claude-skills",
+      "repository": "https://github.com/ictech-projects/ios-claude-skills",
+      "license": "MIT",
+      "keywords": ["security", "owasp", "ios", "swift", "code-review", "masvs"]
+    },
+    {
+      "name": "data-layer",
+      "source": "./data-layer",
+      "description": "Creates or reviews the iOS Data layer for a given domain, following ICT's mandatory architecture (Model → TargetType → RemoteDataSource → Repository).",
+      "version": "1.0.0",
+      "author": { "name": "ICT" },
+      "homepage": "https://github.com/ictech-projects/ios-claude-skills",
+      "repository": "https://github.com/ictech-projects/ios-claude-skills",
+      "license": "MIT",
+      "keywords": ["swift", "ios", "data-layer", "repository", "moya", "architecture"]
     }
   ]
 }
