@@ -23,14 +23,15 @@ When generating new unit tests, follow this process:
 
 1. **Ask the developer which testing framework to use: XCTest or Swift Testing.** Wait for the answer before proceeding.
 2. Read `references/common-rules.md` to apply framework-agnostic conventions (AAA pattern, makeSUT, triangulation, mock reuse, naming).
-3. Based on the chosen framework, load the framework-specific rules:
+3. Read `references/file-structure.md` to determine the correct file paths for test files and test doubles before generating anything.
+4. Based on the chosen framework, load the framework-specific rules:
    - **XCTest**: read `references/xctest-rules.md`
    - **Swift Testing**: read `references/swift-testing-rules.md`
-4. Identify the target layer:
+5. Identify the target layer:
    - If testing a **Repository (data layer)**: read `references/data-layer-tests.md` and generate a `DomainDefaultRepositoryTests.swift` file.
    - If testing a **ViewModel**: read `references/viewmodel-tests.md` and generate a `DomainViewModelTests.swift` file.
-5. Check the project for existing mocks before creating new ones — reuse if available.
-6. Output the full test file with its path relative to the project root.
+6. Check the project for existing mocks before creating new ones — reuse if available. If a new mock is needed, place it in the test doubles folder per `references/file-structure.md`.
+7. Output all files with their full paths relative to the project root.
 
 ---
 
@@ -40,11 +41,12 @@ When reviewing existing unit tests, follow this process:
 
 1. Detect the framework in use from the existing code (`import XCTest` / `import Testing`).
 2. Load `references/common-rules.md` — verify AAA/GWT pattern, makeSUT usage, triangulation for arrays, mock reuse.
-3. Load the framework-specific rules:
+3. Load `references/file-structure.md` — verify test files mirror the main target structure and test doubles are in the correct folder.
+4. Load the framework-specific rules:
    - **XCTest**: load `references/xctest-rules.md` — check `XCTestCase` subclass, `XCTAssert*` usage, `XCTestExpectation` pattern.
    - **Swift Testing**: load `references/swift-testing-rules.md` — check `@Suite`, `@Test`, `#expect`/`#require`, `confirmation` pattern.
-4. If reviewing data layer tests, load `references/data-layer-tests.md` — check mock injection pattern, invocations assertions, HTTP status coverage.
-5. If reviewing ViewModel tests, load `references/viewmodel-tests.md` — check async observation pattern for the detected framework.
+5. If reviewing data layer tests, load `references/data-layer-tests.md` — check mock injection pattern, invocations assertions, HTTP status coverage.
+6. If reviewing ViewModel tests, load `references/viewmodel-tests.md` — check async observation pattern for the detected framework.
 
 ---
 
@@ -93,6 +95,7 @@ Skip files with no issues. End with a prioritized summary of the most impactful 
 ## References
 
 - `references/common-rules.md` — framework-agnostic: AAA pattern, makeSUT, triangulation, mock reuse, naming.
+- `references/file-structure.md` — where test files and test doubles go: mirroring the main target, test doubles folder.
 - `references/xctest-rules.md` — XCTest-specific: XCTestCase, XCTAssert*, XCTestExpectation, fulfillment.
 - `references/swift-testing-rules.md` — Swift Testing-specific: @Suite, @Test, #expect, #require, confirmation.
 - `references/data-layer-tests.md` — Repository test patterns and examples for both frameworks.
