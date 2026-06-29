@@ -1,31 +1,6 @@
-# Common Unit Testing Rules
+# Common Unit Testing Rules (Framework-Agnostic)
 
-## Frameworks
-
-- Use **XCTest** for all test cases.
-- Use **Combine** for observing published properties and async state changes.
-- Do not introduce any additional testing frameworks.
-
----
-
-## Test Structure
-
-- Every test class must be `final class DomainTests: XCTestCase`.
-- Never override `setUp()` or `tearDown()`. Use `makeSUT()` instead.
-- Use `makeSUT()` as a private helper at the bottom of the test class under a `// MARK: - Helpers` section.
-- `makeSUT()` must call `trackForMemoryLeak(sut, file: file, line: line)` before returning.
-
-```swift
-private func makeSUT(
-    /* dependencies */
-    file: StaticString = #filePath,
-    line: UInt = #line
-) -> SomeType {
-    let sut = SomeType(/* dependencies */)
-    trackForMemoryLeak(sut, file: file, line: line)
-    return sut
-}
-```
+These rules apply regardless of whether you use XCTest or Swift Testing. For framework-specific syntax, see `xctest-rules.md` or `swift-testing-rules.md`.
 
 ---
 
@@ -42,10 +17,31 @@ let sut = makeSUT(remote: remote)
 let result = try await sut.doSomething()
 
 // Assert
-XCTAssertEqual(remote.invocations, [.doSomething])
+// (assert invocations, result values, state changes)
 ```
 
 Do not merge arrange/assert into the act step.
+
+---
+
+## makeSUT()
+
+- Always create the system under test via a `makeSUT()` private helper — never inline construction in each test.
+- Place `makeSUT()` at the bottom of the test type under a `// MARK: - Helpers` section.
+- `makeSUT()` must call `trackForMemoryLeak(sut, file: file, line: line)` before returning.
+- Accept all dependencies as parameters with sensible defaults so each test only provides what it needs.
+
+```swift
+private func makeSUT(
+    /* dependencies with defaults */
+    file: StaticString = #filePath,
+    line: UInt = #line
+) -> SomeType {
+    let sut = SomeType(/* dependencies */)
+    trackForMemoryLeak(sut, file: file, line: line)
+    return sut
+}
+```
 
 ---
 
@@ -96,10 +92,10 @@ remote.loginResult = .success(anyLoginSuccessResponse())
 Test names follow the pattern: `test<MethodName>_<condition>_<expectedOutcome>`
 
 Examples:
-- `testLogin_callsRemoteWithCorrectRequest()`
-- `testLogin_success_returnsLoadedResponse()`
-- `testLogin_whenThrowsErrorResponse_returnsErrorState()`
-- `testGetItems_withNoItems_returnsEmptyList()`
+- `testLogin_callsRemoteWithCorrectRequest`
+- `testLogin_success_returnsLoadedResponse`
+- `testLogin_whenThrowsErrorResponse_returnsErrorState`
+- `testGetItems_withNoItems_returnsEmptyList`
 
 ---
 

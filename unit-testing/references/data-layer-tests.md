@@ -17,25 +17,6 @@ Every `DomainMockRemoteDataSource` must:
 3. Use a `MoyaProvider` with `immediatelyStub` when it needs to drive real Moya stubs.
 
 ```swift
-final class EntityMockRemoteDataSource: EntityRemoteDataSource {
-
-    private let stubProvider: MoyaProvider<EntityTargetType>
-
-    init(
-        stubProvider: MoyaProvider<EntityTargetType> = MoyaProvider<EntityTargetType>(stubClosure: MoyaProvider.immediatelyStub)
-    ) {
-        self.stubProvider = stubProvider
-    }
-
-    func getItems() async throws -> GeneralResponse<[Entity.Response.Item]> {
-        try await stubProvider.request(.getItems, model: GeneralResponse<[Entity.Response.Item]>.self)
-    }
-}
-```
-
-For mocks that need to simulate success and failure without a real Moya stub:
-
-```swift
 final class AuthenticationMockRemoteDataSource: AuthenticationRemoteDataSource {
 
     enum Invocation: Equatable {
@@ -76,14 +57,14 @@ For every repository method, cover:
 
 | Case | Description |
 |---|---|
-| Correct invocation | Asserts the mock's `invocations` matches the expected call with the correct arguments |
-| Success (200) | Asserts the returned `RequestState` is `.loaded(response)` with the expected data |
-| ErrorResponse (400/401/404) | Asserts the returned `RequestState` is `.error(ErrorResponse)` with correct statusCode and message |
-| Generic error (NSError) | Asserts the returned `RequestState` is `.error(NSError)` with correct domain and code |
+| Correct invocation | Asserts `invocations` matches the expected call with the correct arguments |
+| Success (200) | Asserts the returned `RequestState` is `.loaded(response)` with expected data |
+| ErrorResponse (400/401/404) | Asserts `.error(ErrorResponse)` with correct statusCode and message |
+| Generic error (NSError) | Asserts `.error(NSError)` with correct domain and code |
 
 ---
 
-## Test Examples
+## XCTest Examples
 
 ### Invocation assertion
 
@@ -96,10 +77,7 @@ func testLogin_callsRemoteWithCorrectRequest() async throws {
 
     _ = try await sut.login(with: anyLoginRequest())
 
-    XCTAssertEqual(
-        remote.invocations,
-        [.login(anyLoginRequest())]
-    )
+    XCTAssertEqual(remote.invocations, [.login(anyLoginRequest())])
 }
 ```
 
@@ -118,10 +96,9 @@ func testLogin_success_returnsLoadedResponse() async throws {
     case .loaded(let response):
         XCTAssertEqual(response.success, true)
         XCTAssertEqual(response.statusCode, 200)
-        XCTAssertEqual(response.message, "Login successfully")
         XCTAssertEqual(response.data, anyLoginData())
     default:
-        XCTFail("Expected login to succeed")
+        XCTFail("Expected .loaded but got \(result)")
     }
 }
 ```
@@ -130,15 +107,8 @@ func testLogin_success_returnsLoadedResponse() async throws {
 
 ```swift
 func testLogin_whenThrowsErrorResponse_returnsErrorState() async throws {
-    let expectedError = ErrorResponse(
-        success: false,
-        statusCode: 400,
-        message: "Invalid password",
-        errors: nil
-    )
-    let remote = AuthenticationMockRemoteDataSource(
-        loginResult: .failure(expectedError)
-    )
+    let expectedError = ErrorResponse(success: false, statusCode: 400, message: "Invalid password", errors: nil)
+    let remote = AuthenticationMockRemoteDataSource(loginResult: .failure(expectedError))
     let sut = makeSUT(remote: remote)
 
     let result = try await sut.login(with: anyLoginRequest())
@@ -148,7 +118,7 @@ func testLogin_whenThrowsErrorResponse_returnsErrorState() async throws {
         XCTAssertEqual(error.statusCode, 400)
         XCTAssertEqual(error.message, "Invalid password")
     default:
-        XCTFail("Expected login to return ErrorResponse")
+        XCTFail("Expected .error(ErrorResponse)")
     }
 }
 ```
@@ -158,9 +128,7 @@ func testLogin_whenThrowsErrorResponse_returnsErrorState() async throws {
 ```swift
 func testLogin_whenThrowsGenericError_returnsErrorState() async throws {
     let dummyError = NSError(domain: "TestError", code: 999)
-    let remote = AuthenticationMockRemoteDataSource(
-        loginResult: .failure(dummyError)
-    )
+    let remote = AuthenticationMockRemoteDataSource(loginResult: .failure(dummyError))
     let sut = makeSUT(remote: remote)
 
     let result = try await sut.login(with: anyLoginRequest())
@@ -170,18 +138,106 @@ func testLogin_whenThrowsGenericError_returnsErrorState() async throws {
         XCTAssertEqual(error.domain, "TestError")
         XCTAssertEqual(error.code, 999)
     default:
-        XCTFail("Expected login to return generic error")
+        XCTFail("Expected .error(NSError)")
     }
+}
+```
+
+### makeSUT (XCTest)
+
+```swift
+private func makeSUT(
+    remote: AuthenticationMockRemoteDataSource = AuthenticationMockRemoteDataSource(),
+    file: StaticString = #filePath,
+    line: UInt = #line
+) -> AuthenticationDefaultRepository {
+    let sut = AuthenticationDefaultRepository(remoteDataSource: remote)
+    trackForMemoryLeak(sut, file: file, line: line)
+    return sut
 }
 ```
 
 ---
 
-## makeSUT for Repository Tests
+## Swift Testing Examples
+
+### Invocation assertion
 
 ```swift
-// MARK: - Helpers
+@Test func login_callsRemoteWithCorrectRequest() async throws {
+    let remote = AuthenticationMockRemoteDataSource(
+        loginResult: .success(anyLoginSuccessResponse())
+    )
+    let sut = makeSUT(remote: remote)
 
+    _ = try await sut.login(with: anyLoginRequest())
+
+    #expect(remote.invocations == [.login(anyLoginRequest())])
+}
+```
+
+### Success case
+
+```swift
+@Test func login_success_returnsLoadedResponse() async throws {
+    let remote = AuthenticationMockRemoteDataSource(
+        loginResult: .success(anyLoginSuccessResponse())
+    )
+    let sut = makeSUT(remote: remote)
+
+    let result = try await sut.login(with: anyLoginRequest())
+
+    guard case .loaded(let response) = result else {
+        Issue.record("Expected .loaded but got \(result)")
+        return
+    }
+    #expect(response.success == true)
+    #expect(response.statusCode == 200)
+    #expect(response.data == anyLoginData())
+}
+```
+
+### ErrorResponse case
+
+```swift
+@Test func login_whenThrowsErrorResponse_returnsErrorState() async throws {
+    let expectedError = ErrorResponse(success: false, statusCode: 400, message: "Invalid password", errors: nil)
+    let remote = AuthenticationMockRemoteDataSource(loginResult: .failure(expectedError))
+    let sut = makeSUT(remote: remote)
+
+    let result = try await sut.login(with: anyLoginRequest())
+
+    guard case .error(let error as ErrorResponse) = result else {
+        Issue.record("Expected .error(ErrorResponse)")
+        return
+    }
+    #expect(error.statusCode == 400)
+    #expect(error.message == "Invalid password")
+}
+```
+
+### Generic error case
+
+```swift
+@Test func login_whenThrowsGenericError_returnsErrorState() async throws {
+    let dummyError = NSError(domain: "TestError", code: 999)
+    let remote = AuthenticationMockRemoteDataSource(loginResult: .failure(dummyError))
+    let sut = makeSUT(remote: remote)
+
+    let result = try await sut.login(with: anyLoginRequest())
+
+    guard case .error(let error as NSError) = result else {
+        Issue.record("Expected .error(NSError)")
+        return
+    }
+    #expect(error.domain == "TestError")
+    #expect(error.code == 999)
+}
+```
+
+### makeSUT (Swift Testing)
+
+```swift
 private func makeSUT(
     remote: AuthenticationMockRemoteDataSource = AuthenticationMockRemoteDataSource(),
     file: StaticString = #filePath,
