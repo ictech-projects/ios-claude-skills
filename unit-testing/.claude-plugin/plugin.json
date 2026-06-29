@@ -1,0 +1,10 @@
+{
+    "name": "unit-testing",
+    "version": "1.0.0",
+    "description": "Writes or reviews iOS unit tests for data layer (Repository) and ViewModel code, following ICT's XCTest + Combine testing patterns.",
+    "author": { "name": "ICT" },
+    "homepage": "https://github.com/ictech-projects/ios-claude-skills",
+    "repository": "https://github.com/ictech-projects/ios-claude-skills",
+    "license": "MIT",
+    "skills": "./skills/"
+  }
