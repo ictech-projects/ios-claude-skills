@@ -49,6 +49,17 @@
       "repository": "https://github.com/ictech-projects/ios-claude-skills",
       "license": "MIT",
       "keywords": ["swift", "ios", "data-layer", "repository", "moya", "architecture"]
+    },
+    {
+      "name": "unit-testing",
+      "source": "./unit-testing",
+      "description": "Writes or reviews iOS unit tests for data layer (Repository) and ViewModel code, following ICT's XCTest + Combine testing patterns.",
+      "version": "1.0.0",
+      "author": { "name": "ICT" },
+      "homepage": "https://github.com/ictech-projects/ios-claude-skills",
+      "repository": "https://github.com/ictech-projects/ios-claude-skills",
+      "license": "MIT",
+      "keywords": ["swift", "ios", "unit-testing", "xctest", "combine", "tdd", "repository", "viewmodel"]
     }
   ]
 }
