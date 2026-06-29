@@ -1,5 +1,5 @@
 ---
-name: swiftui-expert-skill
+name: swiftui-view-gen
 description: Use when writing, reviewing, or refactoring SwiftUI code for iOS or macOS, including state management and `@Observable` data flow, view composition and invalidation/performance, lists and `ForEach` identity, environment usage, localization, animations, Liquid Glass adoption, migrating soft-deprecated APIs, or Instruments `.trace` capture/analysis for hangs, hitches, CPU hotspots, or
   excessive view updates.
 tools: [mcp__figma__get_design_context, mcp__figma__get_node, mcp__figma__get_image]
