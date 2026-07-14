@@ -2,7 +2,7 @@
 
 ## PR Body Template
 
-Every PR body must contain at minimum these two sections, in this order:
+Every PR body must contain at minimum these three sections, in this order:
 
 ```markdown
 ## Overview
@@ -13,15 +13,25 @@ Every PR body must contain at minimum these two sections, in this order:
 
 <ticket URL the developer provided>
 
+## Checklist
+
+- [ ] Pull Request title follows SOP (`[TICKET]<TAG>Title`)
+- [ ] First commit follows SOP (`[TICKET]<TAG>Title`)
+- [ ] Build succeeded
+- [ ] Unit tests pass
+
 ---
 > ⚠️ Please **squash merge** this PR to keep a single commit on the development branch.
 ```
 
 - **Overview** — summarize the actual change, not the commit list verbatim. Base it on the diff and commit messages between the base branch and the current branch.
 - **Ticket** — a bare link (or `[TICKET-ID](url)` if a ticket ID is available) to the URL the developer pasted. Never fabricate a ticket URL — if the developer says there is none, use `NO-BTS` conventions (see below) and state "No ticket — see commit message" instead of a link.
+- **Checklist** — always these four items, in this order:
+  - **Pull Request title follows SOP** and **First commit follows SOP** — check these off automatically only once the workflow has actually validated the title/first commit against the format below. Never check them off without validating.
+  - **Build succeeded** and **Unit tests pass** — the skill cannot verify these itself. Ask the developer whether the build succeeded and unit tests pass, and only check off what they confirm. Leave unchecked (`[ ]`) if they haven't verified yet — don't assume a pass.
 - The squash-merge note is always appended, regardless of what else is in the body.
 
-Additional sections (e.g. `## Screenshots`, `## Testing`) may be appended after these two/three, but Overview and Ticket must always be present and in this order.
+Additional sections (e.g. `## Screenshots`, `## Testing`) may be appended after these three, but Overview, Ticket, and Checklist must always be present and in this order.
 
 ---
 

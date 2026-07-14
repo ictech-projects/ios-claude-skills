@@ -13,7 +13,7 @@ A [Claude Code](https://claude.ai/code) skill marketplace for the ICT iOS team. 
 | SwiftUI Reviewer | `/swiftui-reviewer` | Reviews SwiftUI code for best practices, modern APIs, and performance |
 | SwiftUI View Gen | `/swiftui-view-gen` | Generates SwiftUI views from Figma designs, handles state management, animations, and Liquid Glass adoption |
 | Unit Testing | `/unit-testing` | Writes or reviews unit tests for Repository and ViewModel layers (XCTest + Swift Testing) |
-| Create Pull Request | `/create-pull-request-against-development` | Opens a PR against the development branch using ICT's MR template (Overview + Ticket), validating the commit ticket-tag format first |
+| Create Pull Request | `/create-pull-request-against-development` | Opens a PR against the development branch using ICT's MR template (Overview + Ticket + Checklist), validating the commit ticket-tag format first |
 
 ---
 
@@ -101,7 +101,7 @@ ios-claude-skills/
 │   └── references/       # XCTest and Swift Testing rules, file structure, mocking
 └── create-pull-request-against-development/
     ├── SKILL.md
-    └── references/       # MR template (Overview + Ticket) and commit ticket-tag format
+    └── references/       # MR template (Overview + Ticket + Checklist) and commit ticket-tag format
 ```
 
 ---
@@ -126,7 +126,7 @@ Skills are referenced via `.claude/settings.json` — not copied into the repo. 
 | SwiftUI Reviewer | `/swiftui-reviewer` | Reviews SwiftUI code for best practices, modern APIs, and performance |
 | SwiftUI View Gen | `/swiftui-view-gen` | Generates SwiftUI views, handles state management, animations, and Liquid Glass adoption |
 | Unit Testing | `/unit-testing` | Writes or reviews unit tests for Repository and ViewModel layers (XCTest + Combine) |
-| Create Pull Request | `/create-pull-request-against-development` | Opens a PR against the development branch using ICT's MR template (Overview + Ticket), validating the commit ticket-tag format first |
+| Create Pull Request | `/create-pull-request-against-development` | Opens a PR against the development branch using ICT's MR template (Overview + Ticket + Checklist), validating the commit ticket-tag format first |
 
 ### Setup (one-time per machine)
 

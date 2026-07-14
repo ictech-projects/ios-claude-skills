@@ -1,6 +1,6 @@
 ---
 name: create-pull-request-against-development
-description: Creates a pull request against the team's development branch using ICT's MR template (Overview + Ticket), validating the ticket-tag commit format before opening the PR.
+description: Creates a pull request against the team's development branch using ICT's MR template (Overview + Ticket + Checklist), validating the ticket-tag commit format before opening the PR.
 license: MIT
 metadata:
   author: ICT

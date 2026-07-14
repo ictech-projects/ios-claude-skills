@@ -1,6 +1,6 @@
 ---
 name: create-pull-request-against-development
-description: Creates a pull request against the team's development branch using ICT's MR template (Overview + Ticket), validating the ticket-tag commit format before opening the PR. Use when the developer is ready to open a PR/MR for their branch.
+description: Creates a pull request against the team's development branch using ICT's MR template (Overview + Ticket + Checklist), validating the ticket-tag commit format before opening the PR. Use when the developer is ready to open a PR/MR for their branch.
 license: MIT
 metadata:
   author: ICT
@@ -56,11 +56,18 @@ Check it against the format defined in `references/mr-template.md`:
   - **If the branch has already been pushed to `origin`:** rewriting history means the remote branch will need a force-push to update. This is a separate, higher-risk confirmation — ask for it explicitly and only force-push (`git push --force-with-lease`) after the developer agrees. Never force-push silently as part of the reword.
   - If the developer declines to fix it, stop and do not open the PR — the PR title must come from a correctly-formatted commit.
 
-### 5. Build the PR body
+### 5. Confirm build & test status
 
-Use the exact template in `references/mr-template.md` (`## Overview`, `## Ticket`, plus the squash-merge note). Write the Overview by summarizing the actual diff/commits between the base branch and `HEAD` — don't just restate the commit list.
+Ask the developer whether the build succeeded and whether unit tests pass. Wait for their answer — do not assume either has passed, and do not run the build/tests yourself unless asked.
 
-### 6. Confirm before opening the PR
+### 6. Build the PR body
+
+Use the exact template in `references/mr-template.md` (`## Overview`, `## Ticket`, `## Checklist`, plus the squash-merge note). Write the Overview by summarizing the actual diff/commits between the base branch and `HEAD` — don't just restate the commit list. For the Checklist:
+
+- Check off **Pull Request title follows SOP** and **First commit follows SOP** — you already validated both in steps 3-4.
+- Check off **Build succeeded** / **Unit tests pass** only if the developer confirmed them in step 5; otherwise leave unchecked.
+
+### 7. Confirm before opening the PR
 
 Show the developer the final PR title (the validated first commit message) and body, and confirm before running:
 
@@ -70,7 +77,7 @@ gh pr create --base <base-branch> --title "<first commit message>" --body "<PR b
 
 Opening a PR is visible to the rest of the team — never run this without the developer's go-ahead.
 
-### 7. After opening
+### 8. After opening
 
 Report the PR URL back to the developer, and remind them to **squash merge** when it's approved, so `development` gets a single commit per PR.
 
@@ -82,10 +89,11 @@ Report the PR URL back to the developer, and remind them to **squash merge** whe
 - Never force-push without a separate, explicit confirmation from the developer.
 - Never open the PR (`gh pr create`) without a final confirmation, even if everything validated cleanly.
 - The PR title is always the first commit ahead of the base branch, exactly as written (after any agreed correction) — never a paraphrase.
+- Never check a Checklist box without the underlying condition being true: title/commit SOP boxes require you to have actually validated them; build/test boxes require the developer's confirmation.
 - If `gh` is not authenticated or the repo has no `origin` remote, tell the developer instead of guessing next steps.
 
 ---
 
 ## References
 
-- `references/mr-template.md` — the MR body template (Overview + Ticket sections, squash-merge note) and the commit message ticket-tag format/regex.
+- `references/mr-template.md` — the MR body template (Overview + Ticket + Checklist sections, squash-merge note) and the commit message ticket-tag format/regex.
