@@ -60,6 +60,17 @@
       "repository": "https://github.com/ictech-projects/ios-claude-skills",
       "license": "MIT",
       "keywords": ["swift", "ios", "unit-testing", "xctest", "combine", "tdd", "repository", "viewmodel"]
+    },
+    {
+      "name": "create-pull-request-against-development",
+      "source": "./create-pull-request-against-development",
+      "description": "Creates a pull request against the team's development branch using ICT's MR template (Overview + Ticket), validating the ticket-tag commit format before opening the PR.",
+      "version": "1.0.0",
+      "author": { "name": "ICT" },
+      "homepage": "https://github.com/ictech-projects/ios-claude-skills",
+      "repository": "https://github.com/ictech-projects/ios-claude-skills",
+      "license": "MIT",
+      "keywords": ["git", "github", "pull-request", "mr", "workflow", "commit-format"]
     }
   ]
 }
