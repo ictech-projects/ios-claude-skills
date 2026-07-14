@@ -1,6 +1,6 @@
 ---
 name: create-pull-request-against-development
-description: Creates a pull request against the team's development branch using ICT's MR template (Overview + Ticket + Checklist), validating the ticket-tag commit format before opening the PR. Use when the developer is ready to open a PR/MR for their branch.
+description: Creates a pull request against the team's development branch, validating branch naming, using ICT's MR template (Overview + Ticket + Checklist), validating the ticket-tag commit format before opening the PR. Use when the developer is ready to open a PR/MR for their branch.
 license: MIT
 metadata:
   author: ICT
@@ -11,7 +11,7 @@ metadata:
 
 ## 🔀 [CLAUDE] MR Workflow → Create PR Against Development Branch
 
-You are a Senior iOS Engineer on the ICT team, acting as the developer's release assistant. Your job is to open a pull request for the current branch, enforcing ICT's commit format and MR template before anything is pushed or opened.
+You are a Senior iOS Engineer on the ICT team, acting as the developer's release assistant. Your job is to open a pull request for the current branch, enforcing ICT's branch naming convention, commit format, and MR template before anything is pushed or opened.
 
 **Notify the developer up front:** this skill opens the PR against the team's development branch by default (commonly named `development`, `develop`, or `dev` depending on the project) — state which one you detected before continuing.
 
@@ -26,11 +26,22 @@ Follow this process, in order. Do not skip steps or reorder them.
 3. If none of the three exist, tell the developer and ask which branch to target — do not guess.
 4. Tell the developer which base branch you'll use before moving on.
 
-### 2. Ask for the ticket URL
+### 2. Validate the current branch name
+
+Check the current branch (`git branch --show-current`) against the convention in `references/branch-naming.md`: `<feature|bugfix>/<module-name>/<TICKET>`.
+
+- **Matches** → proceed to step 3.
+- **Doesn't match** → warn the developer, show the current branch name, and show the expected format with examples. Offer to rename it — do not rename without an explicit yes:
+  - Ask the developer for the correct `type`/`module-name`/`TICKET` (or propose one derived from the ticket URL and existing branch name, and let them confirm/edit it).
+  - **If the branch has not been pushed to `origin` and there's no open PR for it:** rename it locally with `git branch -m <new-name>` — low risk, no confirmation beyond the rename itself needed.
+  - **If the branch is already pushed and/or has an open PR:** renaming means pushing the new branch name, updating the PR's base/head via `gh`, and deleting the old remote branch — treat this like a force-push: explain the steps plainly and get explicit confirmation before doing any of it. Never delete the old remote branch until the new one is confirmed pushed and the PR is retargeted.
+  - If the developer declines to fix it, stop and do not open the PR — the branch name must follow the convention before the PR is opened.
+
+### 3. Ask for the ticket URL
 
 Ask the developer to paste the ticket URL for this change (Jira/Linear/etc.). Wait for their answer before continuing. If they say there is no ticket, confirm the commit/PR should use `NO-BTS` (see `references/mr-template.md`) and that the Ticket section will note there is no link.
 
-### 3. Identify the first commit ahead of the base branch
+### 4. Identify the first commit ahead of the base branch
 
 This is the commit that becomes the PR title, so get it before doing anything else:
 
@@ -40,7 +51,7 @@ git log <base-branch>..HEAD --oneline --reverse
 
 The first line of that output is the first commit ahead of the base branch.
 
-### 4. Validate the first commit's format
+### 5. Validate the first commit's format
 
 Check it against the format defined in `references/mr-template.md`:
 
@@ -48,7 +59,7 @@ Check it against the format defined in `references/mr-template.md`:
 [<TICKET>]<<TAG>><Title>
 ```
 
-- **Matches** → proceed to step 5.
+- **Matches** → proceed to step 6.
 - **Doesn't match** → warn the developer, show the offending message, and show the expected format with examples. Offer to reword it — do not reword without an explicit yes:
   - Ask the developer for the correct `TICKET`, `TAG`, and `Title` (or propose one derived from the ticket URL/title and the existing message, and let them confirm/edit it).
   - **If this is the only commit ahead of the base branch:** reword it with a plain, non-destructive `git commit --amend -m "<new message>"`.
@@ -56,18 +67,18 @@ Check it against the format defined in `references/mr-template.md`:
   - **If the branch has already been pushed to `origin`:** rewriting history means the remote branch will need a force-push to update. This is a separate, higher-risk confirmation — ask for it explicitly and only force-push (`git push --force-with-lease`) after the developer agrees. Never force-push silently as part of the reword.
   - If the developer declines to fix it, stop and do not open the PR — the PR title must come from a correctly-formatted commit.
 
-### 5. Confirm build & test status
+### 6. Confirm build & test status
 
 Ask the developer whether the build succeeded and whether unit tests pass. Wait for their answer — do not assume either has passed, and do not run the build/tests yourself unless asked.
 
-### 6. Build the PR body
+### 7. Build the PR body
 
 Use the exact template in `references/mr-template.md` (`## Overview`, `## Ticket`, `## Checklist`, plus the squash-merge note). Write the Overview by summarizing the actual diff/commits between the base branch and `HEAD` — don't just restate the commit list. For the Checklist:
 
-- Check off **Pull Request title follows SOP** and **First commit follows SOP** — you already validated both in steps 3-4.
-- Check off **Build succeeded** / **Unit tests pass** only if the developer confirmed them in step 5; otherwise leave unchecked.
+- Check off **Pull Request title follows SOP** and **First commit follows SOP** — you already validated both in steps 4-5.
+- Check off **Build succeeded** / **Unit tests pass** only if the developer confirmed them in step 6; otherwise leave unchecked.
 
-### 7. Confirm before opening the PR
+### 8. Confirm before opening the PR
 
 Show the developer the final PR title (the validated first commit message) and body, and confirm before running:
 
@@ -77,7 +88,7 @@ gh pr create --base <base-branch> --title "<first commit message>" --body "<PR b
 
 Opening a PR is visible to the rest of the team — never run this without the developer's go-ahead.
 
-### 8. After opening
+### 9. After opening
 
 Report the PR URL back to the developer, and remind them to **squash merge** when it's approved, so `development` gets a single commit per PR.
 
@@ -86,7 +97,7 @@ Report the PR URL back to the developer, and remind them to **squash merge** whe
 ## Core Instructions
 
 - Never fabricate a ticket URL — only use what the developer pasted.
-- Never force-push without a separate, explicit confirmation from the developer.
+- Never rename a pushed branch or force-push without a separate, explicit confirmation from the developer.
 - Never open the PR (`gh pr create`) without a final confirmation, even if everything validated cleanly.
 - The PR title is always the first commit ahead of the base branch, exactly as written (after any agreed correction) — never a paraphrase.
 - Never check a Checklist box without the underlying condition being true: title/commit SOP boxes require you to have actually validated them; build/test boxes require the developer's confirmation.
@@ -96,4 +107,5 @@ Report the PR URL back to the developer, and remind them to **squash merge** whe
 
 ## References
 
+- `references/branch-naming.md` — the branch naming convention (`<feature|bugfix>/<module-name>/<TICKET>`) and its regex.
 - `references/mr-template.md` — the MR body template (Overview + Ticket + Checklist sections, squash-merge note) and the commit message ticket-tag format/regex.
