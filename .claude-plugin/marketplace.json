@@ -71,6 +71,17 @@
       "repository": "https://github.com/ictech-projects/ios-claude-skills",
       "license": "MIT",
       "keywords": ["git", "github", "pull-request", "mr", "workflow", "commit-format"]
+    },
+    {
+      "name": "localization-review",
+      "source": "./localization-review",
+      "description": "Reviews Swift/SwiftUI code for missing or incorrect String Catalog (.xcstrings) localization coverage, flags legacy NSLocalizedString/.strings usage, and — with approval — mechanically wraps flagged strings in String(localized:).",
+      "version": "1.0.0",
+      "author": { "name": "ICT" },
+      "homepage": "https://github.com/ictech-projects/ios-claude-skills",
+      "repository": "https://github.com/ictech-projects/ios-claude-skills",
+      "license": "MIT",
+      "keywords": ["swift", "ios", "localization", "l10n", "string-catalog", "xcstrings", "code-review"]
     }
   ]
 }
