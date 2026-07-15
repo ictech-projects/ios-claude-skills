@@ -1,0 +1,10 @@
+{
+    "name": "localization-review",
+    "version": "1.0.0",
+    "description": "Reviews Swift/SwiftUI code for missing or incorrect String Catalog (.xcstrings) localization coverage, flags legacy NSLocalizedString/.strings usage, and — with approval — mechanically wraps flagged strings in String(localized:).",
+    "author": { "name": "ICT" },
+    "homepage": "https://github.com/ictech-projects/ios-claude-skills",
+    "repository": "https://github.com/ictech-projects/ios-claude-skills",
+    "license": "MIT",
+    "skills": "./skills/"
+  }
