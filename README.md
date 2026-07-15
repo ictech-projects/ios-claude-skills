@@ -1,6 +1,6 @@
 # ios-claude-skills
 
-A [Claude Code](https://claude.ai/code) skill marketplace for the ICT iOS team. Provides six iOS-specific skills covering the full development lifecycle — data layer generation, SwiftUI views, unit testing, security review, and pull request creation.
+A [Claude Code](https://claude.ai/code) skill marketplace for the ICT iOS team. Provides seven iOS-specific skills covering the full development lifecycle — data layer generation, SwiftUI views, unit testing, security review, localization, and pull request creation.
 
 ---
 
@@ -13,6 +13,7 @@ A [Claude Code](https://claude.ai/code) skill marketplace for the ICT iOS team. 
 | SwiftUI Reviewer | `/swiftui-reviewer` | Reviews SwiftUI code for best practices, modern APIs, and performance |
 | SwiftUI View Gen | `/swiftui-view-gen` | Generates SwiftUI views from Figma designs, handles state management, animations, and Liquid Glass adoption |
 | Unit Testing | `/unit-testing` | Writes or reviews unit tests for Repository and ViewModel layers (XCTest + Swift Testing) |
+| Localization Review | `/localization-review` | Reviews code for String Catalog (`.xcstrings`) coverage, flags legacy localization APIs, and mechanically converts flagged strings on approval — never generates translations |
 | Create Pull Request | `/create-pull-request-against-development` | Opens a PR against the development branch, validating branch naming and the commit ticket-tag format, using ICT's MR template (Overview + Ticket + Checklist) |
 
 ---
@@ -41,6 +42,7 @@ After installing the marketplace, enable the skills you want for a project by ad
     "swiftui-reviewer@ios-claude-skills": true,
     "swiftui-view-gen@ios-claude-skills": true,
     "unit-testing@ios-claude-skills": true,
+    "localization-review@ios-claude-skills": true,
     "create-pull-request-against-development@ios-claude-skills": true
   }
 }
@@ -60,6 +62,7 @@ Once installed and enabled, invoke any skill directly from the Claude Code promp
 /unit-testing
 /security-review
 /swiftui-reviewer
+/localization-review
 /create-pull-request-against-development
 ```
 
@@ -99,6 +102,9 @@ ios-claude-skills/
 ├── unit-testing/
 │   ├── SKILL.md
 │   └── references/       # XCTest and Swift Testing rules, file structure, mocking
+├── localization-review/
+│   ├── SKILL.md
+│   └── references/       # Detection rules, String Catalog background
 └── create-pull-request-against-development/
     ├── SKILL.md
     └── references/       # Branch naming convention, MR template (Overview + Ticket + Checklist), commit ticket-tag format
