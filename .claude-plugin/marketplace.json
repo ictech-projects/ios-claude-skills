@@ -3,7 +3,7 @@
   "owner": { "name": "ICT" },
   "metadata": {
     "description": "Agent skills for iOS development on Apple platforms",
-    "version": "1.3.0"
+    "version": "1.4.0"
   },
   "plugins": [
     {
@@ -86,13 +86,24 @@
     {
       "name": "prepare-release",
       "source": "./prepare-release",
-      "description": "Creates a release branch (release/vX.Y.Z) from main, verifies the app version before branching, and optionally exports debug .ipa builds to ~/Downloads.",
+      "description": "Creates a release branch (release/vX.Y.Z) from main, verifies the app version before branching, and optionally hands off to create-ipa for a production build.",
       "version": "1.0.0",
       "author": { "name": "ICT" },
       "homepage": "https://github.com/ictech-projects/ios-claude-skills",
       "repository": "https://github.com/ictech-projects/ios-claude-skills",
       "license": "MIT",
       "keywords": ["release", "git", "xcodebuild", "ipa", "ios", "ci"]
+    },
+    {
+      "name": "create-ipa",
+      "source": "./create-ipa",
+      "description": "Builds and exports a debug .ipa (Debugging distribution, automatic signing) to ~/Downloads for a chosen scheme, from whatever branch is currently checked out.",
+      "version": "1.0.0",
+      "author": { "name": "ICT" },
+      "homepage": "https://github.com/ictech-projects/ios-claude-skills",
+      "repository": "https://github.com/ictech-projects/ios-claude-skills",
+      "license": "MIT",
+      "keywords": ["ipa", "xcodebuild", "archive", "export", "ios", "qa"]
     }
   ]
 }
