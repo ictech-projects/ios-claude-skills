@@ -6,17 +6,41 @@ A [Claude Code](https://claude.ai/code) skill marketplace for the ICT iOS team. 
 
 ## Skills
 
-| Skill | Command | Description |
-|---|---|---|
-| Data Layer | `/data-layer` | Creates or reviews the Data layer for a domain (Model → TargetType → RemoteDataSource → Repository) |
-| Security Review | `/security-review` | Comprehensive iOS security assessment against OWASP MASVS and Apple security guidelines |
-| SwiftUI Reviewer | `/swiftui-reviewer` | Reviews SwiftUI code for best practices, modern APIs, and performance |
-| SwiftUI View Gen | `/swiftui-view-gen` | Generates SwiftUI views from Figma designs, handles state management, animations, and Liquid Glass adoption |
-| Unit Testing | `/unit-testing` | Writes or reviews unit tests for Repository and ViewModel layers (XCTest + Swift Testing) |
-| Localization Review | `/localization-review` | Reviews code for String Catalog (`.xcstrings`) coverage, flags legacy localization APIs, and mechanically converts flagged strings on approval — never generates translations |
-| Create Pull Request | `/create-pull-request-against-development` | Opens a PR against the development branch, validating branch naming and the commit ticket-tag format, using ICT's MR template (Overview + Ticket + Checklist) |
-| Prepare Release | `/prepare-release` | Creates a `release/vX.Y.Z` branch from main, verifies the app version before branching, and optionally hands off to `create-ipa` for a production build |
-| Create IPA | `/create-ipa` | Builds and exports a debug `.ipa` to `~/Downloads` for a chosen scheme, from whatever branch is currently checked out — usable any time QA asks for a build |
+| Skill | Command | Status | Description |
+|---|---|---|---|
+| Data Layer | `/data-layer` | Available | Creates or reviews the Data layer for a domain (Model → TargetType → RemoteDataSource → Repository) |
+| Security Review | `/security-review` | Available | Comprehensive iOS security assessment against OWASP MASVS and Apple security guidelines |
+| SwiftUI Reviewer | `/swiftui-reviewer` | Available | Reviews SwiftUI code for best practices, modern APIs, and performance |
+| SwiftUI View Gen | `/swiftui-view-gen` | Available | Generates SwiftUI views from Figma designs, handles state management, animations, and Liquid Glass adoption |
+| Unit Testing | `/unit-testing` | Available | Writes or reviews unit tests for Repository and ViewModel layers (XCTest + Swift Testing) |
+| Localization Review | `/localization-review` | Available | Reviews code for String Catalog (`.xcstrings`) coverage, flags legacy localization APIs, and mechanically converts flagged strings on approval — never generates translations |
+| Create Pull Request | `/create-pull-request-against-development` | Available | Opens a PR against the development branch, validating branch naming and the commit ticket-tag format, using ICT's MR template (Overview + Ticket + Checklist) |
+| Prepare Release | `/prepare-release` | Available | Creates a `release/vX.Y.Z` branch from main, verifies the app version before branching, and optionally hands off to `create-ipa` for a production build |
+| Create IPA | `/create-ipa` | Available | Builds and exports a debug `.ipa` to `~/Downloads` for a chosen scheme, from whatever branch is currently checked out — usable any time QA asks for a build |
+| Error-Handling Review | — | Planned | Reviews/standardizes the `isError`/`errorMessage` + per-feature 401→logout ViewModel pattern |
+| Accessibility Review | — | Planned | Audits/adds `accessibilityLabel`/`accessibilityIdentifier`/`accessibilityHint` coverage |
+| Feature Scaffold | — | Planned | Scaffolds a new feature's navigation case + repository DI wiring in one step |
+| Design Token Usage | — | Planned | Enforces existing color/font design tokens instead of raw values in new views |
+
+---
+
+## Planned Skills
+
+Candidates only — not yet built. Captured from a brainstorming session (2026-07-20) grounded in a survey of `hris-ios`, to inform what to build next after `prepare-release`/`create-ipa`. Revisit and prune as the codebase evolves.
+
+**High signal** (repeated house-style patterns with no existing skill coverage):
+
+1. **Error-Handling Review** — Every ViewModel hand-rolls an `isError`/`errorMessage` + `withAnimation { isError = true }` pattern (46+ files in `hris-ios`), paired with a per-feature `*ErrorMapper` that special-cases HTTP 401 → `isExpired` → manual token erase → logout, copy-pasted per feature with no shared abstraction or automatic token-refresh/retry. Strongest candidate — most duplicated, most bug-prone.
+2. **Accessibility Review** — Zero uses of `accessibilityLabel`/`accessibilityIdentifier`/`accessibilityHint` anywhere in `HRIS/Feature` or `HRIS/Common`. A flat-out gap rather than an inconsistency; high value, low ambiguity. (Check whether this folds into `swiftui-view-gen`/`swiftui-reviewer`, which already have `references/accessibility*.md`, before building it standalone.)
+3. **Feature Scaffold** — Adding a screen means adding a `NavigationPage` case + a matching switch arm in the single giant `.navigationDestination` switch in `HRISApp.swift`, plus repeating the default-arg repository DI init pattern in every new Repository/ViewModel. A scaffold skill wiring navigation + DI + basic ViewModel/View stubs together would reduce error-prone manual wiring.
+
+**Lower signal / optional:**
+
+4. **Design Token Usage** — Enforce existing `Color.xcassets` tokens and `Font+baseStyle.swift` instead of raw colors/fonts in new views. Likely folds into `swiftui-view-gen`/`swiftui-reviewer` rather than becoming standalone.
+
+**Explicitly not worth a skill (yet):** DI-container abstraction (none exists — the current default-arg protocol init pattern is consistent enough as-is), feature flags/remote config (none in use), deep-linking (single hard-coded push-notification target, no generic router), or CI conventions beyond what `prepare-release`/`create-ipa` now cover.
+
+**Suggested order:** Error-Handling Review → Accessibility Review → Feature Scaffold → Design Token Usage (reassess whether standalone or folded into an existing skill).
 
 ---
 
