@@ -1,6 +1,6 @@
 # ios-claude-skills
 
-A [Claude Code](https://claude.ai/code) skill marketplace for the ICT iOS team. Provides seven iOS-specific skills covering the full development lifecycle — data layer generation, SwiftUI views, unit testing, security review, localization, and pull request creation.
+A [Claude Code](https://claude.ai/code) skill marketplace for the ICT iOS team. Provides eight iOS-specific skills covering the full development lifecycle — data layer generation, SwiftUI views, unit testing, security review, localization, pull request creation, and release preparation.
 
 ---
 
@@ -15,6 +15,7 @@ A [Claude Code](https://claude.ai/code) skill marketplace for the ICT iOS team. 
 | Unit Testing | `/unit-testing` | Writes or reviews unit tests for Repository and ViewModel layers (XCTest + Swift Testing) |
 | Localization Review | `/localization-review` | Reviews code for String Catalog (`.xcstrings`) coverage, flags legacy localization APIs, and mechanically converts flagged strings on approval — never generates translations |
 | Create Pull Request | `/create-pull-request-against-development` | Opens a PR against the development branch, validating branch naming and the commit ticket-tag format, using ICT's MR template (Overview + Ticket + Checklist) |
+| Prepare Release | `/prepare-release` | Creates a `release/vX.Y.Z` branch from main, verifies the app version before branching, and optionally exports debug `.ipa` builds to `~/Downloads` |
 
 ---
 
@@ -43,7 +44,8 @@ After installing the marketplace, enable the skills you want for a project by ad
     "swiftui-view-gen@ios-claude-skills": true,
     "unit-testing@ios-claude-skills": true,
     "localization-review@ios-claude-skills": true,
-    "create-pull-request-against-development@ios-claude-skills": true
+    "create-pull-request-against-development@ios-claude-skills": true,
+    "prepare-release@ios-claude-skills": true
   }
 }
 ```
@@ -64,6 +66,7 @@ Once installed and enabled, invoke any skill directly from the Claude Code promp
 /swiftui-reviewer
 /localization-review
 /create-pull-request-against-development
+/prepare-release
 ```
 
 Each skill guides you through its workflow interactively — no extra configuration needed.
@@ -105,9 +108,12 @@ ios-claude-skills/
 ├── localization-review/
 │   ├── SKILL.md
 │   └── references/       # Detection rules, String Catalog background
-└── create-pull-request-against-development/
+├── create-pull-request-against-development/
+│   ├── SKILL.md
+│   └── references/       # Branch naming convention, MR template (Overview + Ticket + Checklist), commit ticket-tag format
+└── prepare-release/
     ├── SKILL.md
-    └── references/       # Branch naming convention, MR template (Overview + Ticket + Checklist), commit ticket-tag format
+    └── references/       # Branch naming/version verification, xcodebuild archive/export procedure
 ```
 
 ---

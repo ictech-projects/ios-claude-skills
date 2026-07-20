@@ -3,7 +3,7 @@
   "owner": { "name": "ICT" },
   "metadata": {
     "description": "Agent skills for iOS development on Apple platforms",
-    "version": "1.2.0"
+    "version": "1.3.0"
   },
   "plugins": [
     {
@@ -82,6 +82,17 @@
       "repository": "https://github.com/ictech-projects/ios-claude-skills",
       "license": "MIT",
       "keywords": ["swift", "ios", "localization", "l10n", "string-catalog", "xcstrings", "code-review"]
+    },
+    {
+      "name": "prepare-release",
+      "source": "./prepare-release",
+      "description": "Creates a release branch (release/vX.Y.Z) from main, verifies the app version before branching, and optionally exports debug .ipa builds to ~/Downloads.",
+      "version": "1.0.0",
+      "author": { "name": "ICT" },
+      "homepage": "https://github.com/ictech-projects/ios-claude-skills",
+      "repository": "https://github.com/ictech-projects/ios-claude-skills",
+      "license": "MIT",
+      "keywords": ["release", "git", "xcodebuild", "ipa", "ios", "ci"]
     }
   ]
 }
