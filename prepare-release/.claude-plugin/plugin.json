@@ -1,0 +1,10 @@
+{
+    "name": "prepare-release",
+    "version": "1.0.0",
+    "description": "Creates a release branch (release/vX.Y.Z) from main, verifies the app version before branching, and optionally exports debug .ipa builds to ~/Downloads.",
+    "author": { "name": "ICT" },
+    "homepage": "https://github.com/ictech-projects/ios-claude-skills",
+    "repository": "https://github.com/ictech-projects/ios-claude-skills",
+    "license": "MIT",
+    "skills": "./skills/"
+  }

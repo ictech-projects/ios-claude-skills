@@ -1,0 +1,10 @@
+{
+    "name": "create-ipa",
+    "version": "1.0.0",
+    "description": "Builds and exports a debug .ipa (Debugging distribution, automatic signing) to ~/Downloads for a chosen scheme, from whatever branch is currently checked out.",
+    "author": { "name": "ICT" },
+    "homepage": "https://github.com/ictech-projects/ios-claude-skills",
+    "repository": "https://github.com/ictech-projects/ios-claude-skills",
+    "license": "MIT",
+    "skills": "./skills/"
+  }
