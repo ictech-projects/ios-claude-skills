@@ -3,7 +3,7 @@
   "owner": { "name": "ICT" },
   "metadata": {
     "description": "Agent skills for iOS development on Apple platforms",
-    "version": "1.5.0"
+    "version": "1.6.0"
   },
   "plugins": [
     {
@@ -115,6 +115,17 @@
       "repository": "https://github.com/ictech-projects/ios-claude-skills",
       "license": "MIT",
       "keywords": ["swift", "ios", "navigation", "routing", "swiftui", "code-generation"]
+    },
+    {
+      "name": "design-token-usage",
+      "source": "./design-token-usage",
+      "description": "Reviews SwiftUI code for raw color/font literals that bypass the project's design-token system, and — with approval — mechanically replaces matched literals with the correct token.",
+      "version": "1.0.0",
+      "author": { "name": "ICT" },
+      "homepage": "https://github.com/ictech-projects/ios-claude-skills",
+      "repository": "https://github.com/ictech-projects/ios-claude-skills",
+      "license": "MIT",
+      "keywords": ["swift", "ios", "swiftui", "design-system", "design-tokens", "code-review"]
     }
   ]
 }
