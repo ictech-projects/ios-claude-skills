@@ -1,6 +1,6 @@
 # ios-claude-skills
 
-A [Claude Code](https://claude.ai/code) skill marketplace for the ICT iOS team. Provides eleven iOS-specific skills covering the full development lifecycle — data layer generation, SwiftUI views, unit testing, security review, localization, pull request creation, release preparation, IPA builds, navigation wiring, and design-token compliance.
+A [Claude Code](https://claude.ai/code) skill marketplace for the ICT iOS team. Provides twelve iOS-specific skills covering the full development lifecycle — data layer generation, SwiftUI views, unit testing, security review, localization, pull request creation, release preparation, IPA builds, navigation wiring, design-token compliance, and preview mock generation.
 
 ---
 
@@ -19,9 +19,9 @@ A [Claude Code](https://claude.ai/code) skill marketplace for the ICT iOS team. 
 | Create IPA | `/create-ipa` | Available | Builds and exports a debug `.ipa` to `~/Downloads` for a chosen scheme, from whatever branch is currently checked out — usable any time QA asks for a build |
 | Add Navigation Route | `/add-navigation-route` | Available | Wires a new screen into ICT's enum-based navigation system — route case, render switch, and entry-point call site |
 | Design Token Usage | `/design-token-usage` | Available | Reviews code for raw color/font literals bypassing the project's design tokens, and mechanically replaces matched literals on approval |
+| Preview Mock Generator | `/preview-mock-generator` | Available | Generates `*PreviewRepository` stubs with realistic fixture data for `#Preview` blocks, and incrementally patches them when a protocol changes |
 | Error-Handling Review | — | Planned | Reviews/standardizes the `isError`/`errorMessage` + per-feature 401→logout ViewModel pattern |
 | Accessibility Review | — | Planned | Audits/adds `accessibilityLabel`/`accessibilityIdentifier`/`accessibilityHint` coverage |
-| Preview Mock Generator | — | Planned | Generates `*PreviewRepository` stubs with realistic fixture data for `#Preview` blocks |
 
 ---
 
@@ -44,11 +44,10 @@ accessibility today. **Preview Mock Generator** is new from the second pass.
 
 1. **Error-Handling Review** — Every ViewModel hand-rolls an `isError`/`errorMessage` + `withAnimation { isError = true }` pattern (46+ files in `hris-ios`), paired with a per-feature `*ErrorMapper` that special-cases HTTP 401 → `isExpired` → manual token erase → logout, copy-pasted per feature with no shared abstraction or automatic token-refresh/retry. Strongest candidate — most duplicated, most bug-prone.
 2. **Accessibility Review** — Zero uses of `accessibilityLabel`/`accessibilityIdentifier`/`accessibilityHint` anywhere in `HRIS/Feature` or `HRIS/Common`. A flat-out gap rather than an inconsistency; high value, low ambiguity.
-3. **Preview Mock Generator** — 6+ hand-written `*PreviewRepository` structs (~100-170 lines each) must be manually kept in sync whenever their Repository protocol changes.
 
 **Explicitly not worth a skill (yet):** DI-container abstraction (none exists — the current default-arg protocol init pattern is consistent enough as-is), feature flags/remote config (none in use), deep-linking (single hard-coded push-notification target, no generic router), or CI conventions beyond what `prepare-release`/`create-ipa` now cover.
 
-**Suggested order:** Preview Mock Generator → Accessibility Review → Error-Handling Review.
+**Suggested order:** Accessibility Review → Error-Handling Review.
 
 ---
 
@@ -81,7 +80,8 @@ After installing the marketplace, enable the skills you want for a project by ad
     "prepare-release@ios-claude-skills": true,
     "create-ipa@ios-claude-skills": true,
     "add-navigation-route@ios-claude-skills": true,
-    "design-token-usage@ios-claude-skills": true
+    "design-token-usage@ios-claude-skills": true,
+    "preview-mock-generator@ios-claude-skills": true
   }
 }
 ```
@@ -106,6 +106,7 @@ Once installed and enabled, invoke any skill directly from the Claude Code promp
 /create-ipa
 /add-navigation-route
 /design-token-usage
+/preview-mock-generator
 ```
 
 Each skill guides you through its workflow interactively — no extra configuration needed.
@@ -159,9 +160,12 @@ ios-claude-skills/
 ├── add-navigation-route/
 │   ├── SKILL.md
 │   └── references/       # Route-enum/render-switch pattern, wiring checklist
-└── design-token-usage/
+├── design-token-usage/
+│   ├── SKILL.md
+│   └── references/       # Literal-detection rules, token-mapping strategy
+└── preview-mock-generator/
     ├── SKILL.md
-    └── references/       # Literal-detection rules, token-mapping strategy
+    └── references/       # Fixture-building conventions, #Preview wiring
 ```
 
 ---

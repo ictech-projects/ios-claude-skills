@@ -1,0 +1,10 @@
+{
+    "name": "preview-mock-generator",
+    "version": "1.0.0",
+    "description": "Generates a *PreviewRepository conforming to a given Repository protocol, with realistic fixture data, wired into a SwiftUI #Preview block — and incrementally patches an existing one when the protocol has changed.",
+    "author": { "name": "ICT" },
+    "homepage": "https://github.com/ictech-projects/ios-claude-skills",
+    "repository": "https://github.com/ictech-projects/ios-claude-skills",
+    "license": "MIT",
+    "skills": "./skills/"
+  }
