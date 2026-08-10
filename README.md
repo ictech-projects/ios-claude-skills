@@ -1,6 +1,6 @@
 # ios-claude-skills
 
-A [Claude Code](https://claude.ai/code) skill marketplace for the ICT iOS team. Provides nine iOS-specific skills covering the full development lifecycle — data layer generation, SwiftUI views, unit testing, security review, localization, pull request creation, release preparation, and IPA builds.
+A [Claude Code](https://claude.ai/code) skill marketplace for the ICT iOS team. Provides ten iOS-specific skills covering the full development lifecycle — data layer generation, SwiftUI views, unit testing, security review, localization, pull request creation, release preparation, IPA builds, and navigation wiring.
 
 ---
 
@@ -17,30 +17,39 @@ A [Claude Code](https://claude.ai/code) skill marketplace for the ICT iOS team. 
 | Create Pull Request | `/create-pull-request-against-development` | Available | Opens a PR against the development branch, validating branch naming and the commit ticket-tag format, using ICT's MR template (Overview + Ticket + Checklist) |
 | Prepare Release | `/prepare-release` | Available | Creates a `release/vX.Y.Z` branch from main, verifies the app version before branching, and optionally hands off to `create-ipa` for a production build |
 | Create IPA | `/create-ipa` | Available | Builds and exports a debug `.ipa` to `~/Downloads` for a chosen scheme, from whatever branch is currently checked out — usable any time QA asks for a build |
+| Add Navigation Route | `/add-navigation-route` | Available | Wires a new screen into ICT's enum-based navigation system — route case, render switch, and entry-point call site |
 | Error-Handling Review | — | Planned | Reviews/standardizes the `isError`/`errorMessage` + per-feature 401→logout ViewModel pattern |
 | Accessibility Review | — | Planned | Audits/adds `accessibilityLabel`/`accessibilityIdentifier`/`accessibilityHint` coverage |
-| Feature Scaffold | — | Planned | Scaffolds a new feature's navigation case + repository DI wiring in one step |
 | Design Token Usage | — | Planned | Enforces existing color/font design tokens instead of raw values in new views |
+| Preview Mock Generator | — | Planned | Generates `*PreviewRepository` stubs with realistic fixture data for `#Preview` blocks |
 
 ---
 
 ## Planned Skills
 
-Candidates only — not yet built. Captured from a brainstorming session (2026-07-20) grounded in a survey of `hris-ios`, to inform what to build next after `prepare-release`/`create-ipa`. Revisit and prune as the codebase evolves.
+Candidates only — not yet built. Originally captured from a brainstorming session
+(2026-07-20) grounded in a survey of `hris-ios`; revised in a follow-up session
+(2026-08-10) after a second pass over the same codebase. That second pass split
+the original **Feature Scaffold** candidate in two: its navigation-wiring half
+shipped standalone as `add-navigation-route` (above), and its DI-wiring half was
+dropped — it would have duplicated the "not worth a skill" DI note below. The
+error-handling half was never part of Feature Scaffold to begin with; it stays
+its own candidate. Both **Accessibility Review** and **Design Token Usage** were
+re-affirmed as worth building standalone rather than folding into
+`swiftui-reviewer`/`swiftui-view-gen` — folding them in would bury them as one
+bullet among many in a general review, the same problem the survey found with
+accessibility today. **Preview Mock Generator** is new from the second pass.
 
 **High signal** (repeated house-style patterns with no existing skill coverage):
 
 1. **Error-Handling Review** — Every ViewModel hand-rolls an `isError`/`errorMessage` + `withAnimation { isError = true }` pattern (46+ files in `hris-ios`), paired with a per-feature `*ErrorMapper` that special-cases HTTP 401 → `isExpired` → manual token erase → logout, copy-pasted per feature with no shared abstraction or automatic token-refresh/retry. Strongest candidate — most duplicated, most bug-prone.
-2. **Accessibility Review** — Zero uses of `accessibilityLabel`/`accessibilityIdentifier`/`accessibilityHint` anywhere in `HRIS/Feature` or `HRIS/Common`. A flat-out gap rather than an inconsistency; high value, low ambiguity. (Check whether this folds into `swiftui-view-gen`/`swiftui-reviewer`, which already have `references/accessibility*.md`, before building it standalone.)
-3. **Feature Scaffold** — Adding a screen means adding a `NavigationPage` case + a matching switch arm in the single giant `.navigationDestination` switch in `HRISApp.swift`, plus repeating the default-arg repository DI init pattern in every new Repository/ViewModel. A scaffold skill wiring navigation + DI + basic ViewModel/View stubs together would reduce error-prone manual wiring.
-
-**Lower signal / optional:**
-
-4. **Design Token Usage** — Enforce existing `Color.xcassets` tokens and `Font+baseStyle.swift` instead of raw colors/fonts in new views. Likely folds into `swiftui-view-gen`/`swiftui-reviewer` rather than becoming standalone.
+2. **Accessibility Review** — Zero uses of `accessibilityLabel`/`accessibilityIdentifier`/`accessibilityHint` anywhere in `HRIS/Feature` or `HRIS/Common`. A flat-out gap rather than an inconsistency; high value, low ambiguity.
+3. **Design Token Usage** — 24+ files use raw `Color.red/white/black/gray`/`UIColor(red:...)` literals and 6+ use `.font(.system(size:))` instead of the app's actual `Color.xcassets` tokens and `Font+Base.swift` typography.
+4. **Preview Mock Generator** — 6+ hand-written `*PreviewRepository` structs (~100-170 lines each) must be manually kept in sync whenever their Repository protocol changes.
 
 **Explicitly not worth a skill (yet):** DI-container abstraction (none exists — the current default-arg protocol init pattern is consistent enough as-is), feature flags/remote config (none in use), deep-linking (single hard-coded push-notification target, no generic router), or CI conventions beyond what `prepare-release`/`create-ipa` now cover.
 
-**Suggested order:** Error-Handling Review → Accessibility Review → Feature Scaffold → Design Token Usage (reassess whether standalone or folded into an existing skill).
+**Suggested order:** Design Token Usage → Preview Mock Generator → Accessibility Review → Error-Handling Review.
 
 ---
 
@@ -71,7 +80,8 @@ After installing the marketplace, enable the skills you want for a project by ad
     "localization-review@ios-claude-skills": true,
     "create-pull-request-against-development@ios-claude-skills": true,
     "prepare-release@ios-claude-skills": true,
-    "create-ipa@ios-claude-skills": true
+    "create-ipa@ios-claude-skills": true,
+    "add-navigation-route@ios-claude-skills": true
   }
 }
 ```
@@ -94,6 +104,7 @@ Once installed and enabled, invoke any skill directly from the Claude Code promp
 /create-pull-request-against-development
 /prepare-release
 /create-ipa
+/add-navigation-route
 ```
 
 Each skill guides you through its workflow interactively — no extra configuration needed.
@@ -141,9 +152,12 @@ ios-claude-skills/
 ├── prepare-release/
 │   ├── SKILL.md
 │   └── references/       # release/vX.Y.Z branch naming and version-verification procedure
-└── create-ipa/
+├── create-ipa/
+│   ├── SKILL.md
+│   └── references/       # xcodebuild archive/export procedure (Debugging distribution, automatic signing)
+└── add-navigation-route/
     ├── SKILL.md
-    └── references/       # xcodebuild archive/export procedure (Debugging distribution, automatic signing)
+    └── references/       # Route-enum/render-switch pattern, wiring checklist
 ```
 
 ---

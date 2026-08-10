@@ -3,7 +3,7 @@
   "owner": { "name": "ICT" },
   "metadata": {
     "description": "Agent skills for iOS development on Apple platforms",
-    "version": "1.4.0"
+    "version": "1.5.0"
   },
   "plugins": [
     {
@@ -104,6 +104,17 @@
       "repository": "https://github.com/ictech-projects/ios-claude-skills",
       "license": "MIT",
       "keywords": ["ipa", "xcodebuild", "archive", "export", "ios", "qa"]
+    },
+    {
+      "name": "add-navigation-route",
+      "source": "./add-navigation-route",
+      "description": "Wires a new screen into ICT's enum-based navigation system — adds the route case, wires the central render switch, and wires or reports the entry-point call site.",
+      "version": "1.0.0",
+      "author": { "name": "ICT" },
+      "homepage": "https://github.com/ictech-projects/ios-claude-skills",
+      "repository": "https://github.com/ictech-projects/ios-claude-skills",
+      "license": "MIT",
+      "keywords": ["swift", "ios", "navigation", "routing", "swiftui", "code-generation"]
     }
   ]
 }
