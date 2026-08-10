@@ -1,0 +1,10 @@
+{
+    "name": "design-token-usage",
+    "version": "1.0.0",
+    "description": "Reviews SwiftUI code for raw color/font literals that bypass the project's design-token system, and — with approval — mechanically replaces matched literals with the correct token.",
+    "author": { "name": "ICT" },
+    "homepage": "https://github.com/ictech-projects/ios-claude-skills",
+    "repository": "https://github.com/ictech-projects/ios-claude-skills",
+    "license": "MIT",
+    "skills": "./skills/"
+  }
