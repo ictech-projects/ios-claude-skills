@@ -3,7 +3,7 @@
   "owner": { "name": "ICT" },
   "metadata": {
     "description": "Agent skills for iOS development on Apple platforms",
-    "version": "1.6.0"
+    "version": "1.7.0"
   },
   "plugins": [
     {
@@ -126,6 +126,17 @@
       "repository": "https://github.com/ictech-projects/ios-claude-skills",
       "license": "MIT",
       "keywords": ["swift", "ios", "swiftui", "design-system", "design-tokens", "code-review"]
+    },
+    {
+      "name": "preview-mock-generator",
+      "source": "./preview-mock-generator",
+      "description": "Generates a *PreviewRepository conforming to a given Repository protocol, with realistic fixture data, wired into a SwiftUI #Preview block — and incrementally patches an existing one when the protocol has changed.",
+      "version": "1.0.0",
+      "author": { "name": "ICT" },
+      "homepage": "https://github.com/ictech-projects/ios-claude-skills",
+      "repository": "https://github.com/ictech-projects/ios-claude-skills",
+      "license": "MIT",
+      "keywords": ["swift", "ios", "swiftui", "preview", "mock", "code-generation"]
     }
   ]
 }
