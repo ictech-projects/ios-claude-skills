@@ -1,0 +1,10 @@
+{
+    "name": "accessibility-audit",
+    "version": "1.0.0",
+    "description": "A dedicated, scope-selectable sweep for missing VoiceOver labels/traits, Dynamic Type hazards, and accessibilityIdentifier coverage, applying fixes with real adjacent copy on approval.",
+    "author": { "name": "ICT" },
+    "homepage": "https://github.com/ictech-projects/ios-claude-skills",
+    "repository": "https://github.com/ictech-projects/ios-claude-skills",
+    "license": "MIT",
+    "skills": "./skills/"
+  }

@@ -3,7 +3,7 @@
   "owner": { "name": "ICT" },
   "metadata": {
     "description": "Agent skills for iOS development on Apple platforms",
-    "version": "1.7.0"
+    "version": "1.8.0"
   },
   "plugins": [
     {
@@ -137,6 +137,17 @@
       "repository": "https://github.com/ictech-projects/ios-claude-skills",
       "license": "MIT",
       "keywords": ["swift", "ios", "swiftui", "preview", "mock", "code-generation"]
+    },
+    {
+      "name": "accessibility-audit",
+      "source": "./accessibility-audit",
+      "description": "A dedicated, scope-selectable sweep for missing VoiceOver labels/traits, Dynamic Type hazards, and accessibilityIdentifier coverage, applying fixes with real adjacent copy on approval.",
+      "version": "1.0.0",
+      "author": { "name": "ICT" },
+      "homepage": "https://github.com/ictech-projects/ios-claude-skills",
+      "repository": "https://github.com/ictech-projects/ios-claude-skills",
+      "license": "MIT",
+      "keywords": ["swift", "ios", "swiftui", "accessibility", "voiceover", "code-review"]
     }
   ]
 }
