@@ -3,7 +3,7 @@
   "owner": { "name": "ICT" },
   "metadata": {
     "description": "Agent skills for iOS development on Apple platforms",
-    "version": "1.8.0"
+    "version": "1.9.0"
   },
   "plugins": [
     {
@@ -148,6 +148,17 @@
       "repository": "https://github.com/ictech-projects/ios-claude-skills",
       "license": "MIT",
       "keywords": ["swift", "ios", "swiftui", "accessibility", "voiceover", "code-review"]
+    },
+    {
+      "name": "error-mapper-scaffold",
+      "source": "./error-mapper-scaffold",
+      "description": "Discovers ICT's existing error-mapping convention and, given a target ViewModel/Repository, generates the error mapper and wires the ViewModel to use it — or patches an existing mapper with only the missing mappings.",
+      "version": "1.0.0",
+      "author": { "name": "ICT" },
+      "homepage": "https://github.com/ictech-projects/ios-claude-skills",
+      "repository": "https://github.com/ictech-projects/ios-claude-skills",
+      "license": "MIT",
+      "keywords": ["swift", "ios", "error-handling", "viewmodel", "code-generation"]
     }
   ]
 }

@@ -1,6 +1,6 @@
 # ios-claude-skills
 
-A [Claude Code](https://claude.ai/code) skill marketplace for the ICT iOS team. Provides thirteen iOS-specific skills covering the full development lifecycle — data layer generation, SwiftUI views, unit testing, security review, localization, pull request creation, release preparation, IPA builds, navigation wiring, design-token compliance, preview mock generation, and accessibility auditing.
+A [Claude Code](https://claude.ai/code) skill marketplace for the ICT iOS team. Provides fourteen iOS-specific skills covering the full development lifecycle — data layer generation, SwiftUI views, unit testing, security review, localization, pull request creation, release preparation, IPA builds, navigation wiring, design-token compliance, preview mock generation, accessibility auditing, and error-mapper scaffolding.
 
 ---
 
@@ -21,28 +21,27 @@ A [Claude Code](https://claude.ai/code) skill marketplace for the ICT iOS team. 
 | Design Token Usage | `/design-token-usage` | Available | Reviews code for raw color/font literals bypassing the project's design tokens, and mechanically replaces matched literals on approval |
 | Preview Mock Generator | `/preview-mock-generator` | Available | Generates `*PreviewRepository` stubs with realistic fixture data for `#Preview` blocks, and incrementally patches them when a protocol changes |
 | Accessibility Audit | `/accessibility-audit` | Available | A dedicated, scope-selectable sweep for VoiceOver/Dynamic Type gaps and `accessibilityIdentifier` coverage, fixed with real adjacent copy on approval |
-| Error-Handling Review | — | Planned | Reviews/standardizes the `isError`/`errorMessage` + per-feature 401→logout ViewModel pattern |
+| Error Mapper Scaffold | `/error-mapper-scaffold` | Available | Discovers ICT's error-mapping convention and generates/patches a ViewModel's error mapper, always routing 401 through the shared logout flow |
 
 ---
 
-## Planned Skills
+## Skill History
 
-Candidates only — not yet built. Originally captured from a brainstorming session
-(2026-07-20) grounded in a survey of `hris-ios`; revised in a follow-up session
-(2026-08-10) after a second pass over the same codebase. That second pass split
-the original **Feature Scaffold** candidate in two: its navigation-wiring half
-shipped standalone as `add-navigation-route` (above), and its DI-wiring half was
-dropped — it would have duplicated the "not worth a skill" DI note below. The
-error-handling half was never part of Feature Scaffold to begin with; it stays
-its own candidate. Both **Accessibility Review** and **Design Token Usage** were
-re-affirmed as worth building standalone rather than folding into
-`swiftui-reviewer`/`swiftui-view-gen` — folding them in would bury them as one
-bullet among many in a general review, the same problem the survey found with
-accessibility today. **Preview Mock Generator** is new from the second pass.
+`add-navigation-route`, `design-token-usage`, `preview-mock-generator`,
+`accessibility-audit`, and `error-mapper-scaffold` were captured as candidates
+from a brainstorming session (2026-07-20) grounded in a survey of `hris-ios`,
+revised in a follow-up session (2026-08-10) after a second pass over the same
+codebase, and have since all shipped. That second pass split the original
+**Feature Scaffold** candidate in two: its navigation-wiring half shipped
+standalone as `add-navigation-route`, and its DI-wiring half was dropped as
+not worth a skill (see below) — error handling was never part of Feature
+Scaffold to begin with, and shipped separately as `error-mapper-scaffold`.
+**Accessibility Audit** and **Design Token Usage** were built standalone
+rather than folded into `swiftui-reviewer`/`swiftui-view-gen`, so each gets a
+dedicated pass instead of being one bullet among many in a general review.
 
-**High signal** (repeated house-style patterns with no existing skill coverage):
-
-1. **Error-Handling Review** — Every ViewModel hand-rolls an `isError`/`errorMessage` + `withAnimation { isError = true }` pattern (46+ files in `hris-ios`), paired with a per-feature `*ErrorMapper` that special-cases HTTP 401 → `isExpired` → manual token erase → logout, copy-pasted per feature with no shared abstraction or automatic token-refresh/retry. Last remaining candidate — most duplicated, most bug-prone.
+There are no open candidates right now. Revisit this section, and the codebase
+survey approach that produced it, as `hris-ios` evolves.
 
 **Explicitly not worth a skill (yet):** DI-container abstraction (none exists — the current default-arg protocol init pattern is consistent enough as-is), feature flags/remote config (none in use), deep-linking (single hard-coded push-notification target, no generic router), or CI conventions beyond what `prepare-release`/`create-ipa` now cover.
 
@@ -79,7 +78,8 @@ After installing the marketplace, enable the skills you want for a project by ad
     "add-navigation-route@ios-claude-skills": true,
     "design-token-usage@ios-claude-skills": true,
     "preview-mock-generator@ios-claude-skills": true,
-    "accessibility-audit@ios-claude-skills": true
+    "accessibility-audit@ios-claude-skills": true,
+    "error-mapper-scaffold@ios-claude-skills": true
   }
 }
 ```
@@ -106,6 +106,7 @@ Once installed and enabled, invoke any skill directly from the Claude Code promp
 /design-token-usage
 /preview-mock-generator
 /accessibility-audit
+/error-mapper-scaffold
 ```
 
 Each skill guides you through its workflow interactively — no extra configuration needed.
@@ -165,9 +166,12 @@ ios-claude-skills/
 ├── preview-mock-generator/
 │   ├── SKILL.md
 │   └── references/       # Fixture-building conventions, #Preview wiring
-└── accessibility-audit/
+├── accessibility-audit/
+│   ├── SKILL.md
+│   └── references/       # Audit rules, accessibilityIdentifier convention
+└── error-mapper-scaffold/
     ├── SKILL.md
-    └── references/       # Audit rules, accessibilityIdentifier convention
+    └── references/       # Error-mapping convention (both shapes), 401→logout rule
 ```
 
 ---
