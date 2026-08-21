@@ -5,7 +5,7 @@ license: MIT
 argument-hint: "[scheme] [label]"
 metadata:
   author: ICT
-  version: "1.0"
+  version: "1.1"
 ---
 
 > **ICT iOS Team** — This skill exports debug IPAs following ICT's process. All output must adhere exactly to the pattern defined in `references/ipa-export.md`. Do not deviate.
@@ -26,13 +26,17 @@ Tell the developer which branch is currently checked out. If they passed a schem
 
 Ask for a short label for the output (e.g. a version like `v1.1.7`). If currently on a `release/vX.Y.Z` branch, suggest that version as the default and let the developer confirm.
 
-### 3. Archive and export
+### 3. Confirm the build number
+
+A local archive does not get a CI-stamped build number — it ships whatever `CURRENT_PROJECT_VERSION` is currently committed in `project.pbxproj`, which is often stale. Show the developer that committed value, ask them for the latest known build number from their actual build environment (Xcode Cloud, TestFlight, etc.), and if the committed value is stale, offer to bump it (with confirmation) before archiving.
+
+### 4. Archive and export
 
 For each requested scheme: read signing info dynamically from `project.pbxproj` (never hardcode a team ID), archive with `xcodebuild archive`, generate the export options plist, and export with `xcodebuild -exportArchive` to `~/Downloads/<Scheme>-<label>/`.
 
-### 4. Report back
+### 5. Verify and report back
 
-Report the exact `.ipa` path(s) produced, per scheme, and which branch/commit each was built from. If `xcodebuild` fails, report the actual error — do not attempt to fix signing/certificate issues yourself.
+Read the actual `CFBundleShortVersionString`/`CFBundleVersion` out of the exported `.ipa` itself (unzip it, `PlistBuddy` the `Info.plist`) — never rely on the label or output folder name, which can be stale or rewritten by an unrelated local script. Report the exact `.ipa` path(s), the verified version/build number, and which branch/commit each was built from. If `xcodebuild` fails, report the actual error — do not attempt to fix signing/certificate issues yourself.
 
 ---
 
@@ -41,6 +45,8 @@ Report the exact `.ipa` path(s) produced, per scheme, and which branch/commit ea
 - **Never assume which branch to build from** — always state the currently checked-out branch back to the developer before archiving, since the .ipa reflects whatever is on disk right now.
 - **Never run an archive/export without confirming scheme(s) and label first** — it can take minutes and writes to the developer's `~/Downloads`.
 - **Never hardcode a team ID, bundle identifier, or app name** — read them from `project.pbxproj` for the specific project this runs against.
+- **Never assume the committed `CURRENT_PROJECT_VERSION` is current** — a local archive has no CI in the loop to refresh it. Ask the developer for the latest known build number from their actual build environment before archiving, and get explicit confirmation before bumping it in `project.pbxproj`.
+- **Never report success based on a label, folder name, or committed project value alone** — after exporting, read `CFBundleShortVersionString`/`CFBundleVersion` back out of the actual `.ipa`'s `Info.plist` and report those verified values.
 - If `xcodebuild archive`/`-exportArchive` fails (signing, provisioning, or otherwise), report the actual error to the developer — do not guess at a fix.
 
 ---
